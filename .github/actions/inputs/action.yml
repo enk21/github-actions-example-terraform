@@ -1,0 +1,59 @@
+# Control Plane Github Action
+
+name: CI-Action
+description: Control Plane Action
+
+inputs:
+  org:
+    description: 'Control Plane Org'
+    required: true
+  token:
+    description: 'Control Plane Service Account Key'
+    required: true
+  control_plane_terraform_version:
+    description: 'Control Plane Terraform Provider Version'
+    required: true
+  image:
+    description: 'Image Name'
+    required: true
+  tag:
+    description: 'Image Tag'
+    required: true
+  gvc:
+    description: 'GVC'
+    required: true
+  workload:
+    description: 'Workload'
+    required: true
+  terraform_cloud_token:
+    description: 'Terraform Cloud Token'
+    required: true
+  terraform_workspace:
+    description: 'Terraform Workspace'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Control Plane CLI - Install
+      shell: bash
+      run: sudo npm install -g @controlplane/cli
+
+    - name: Install Control Plane Terraform Provider
+      shell: bash
+      run: |
+        wget https://github.com/controlplane-com/examples/raw/main/terraform/provider/${{inputs.control_plane_terraform_version}}/terraform-provider-cpln_${{inputs.control_plane_terraform_version}}_linux_amd64.tgz -q
+        mkdir -p $HOME/.terraform.d/plugins/controlplane.com/com/cpln/${{inputs.control_plane_terraform_version}}/linux_amd64 && tar -xvf terraform-provider-cpln_${{inputs.control_plane_terraform_version}}_linux_amd64.tgz -C $HOME/.terraform.d/plugins/controlplane.com/com/cpln/${{inputs.control_plane_terraform_version}}/linux_amd64
+
+    - name: Set Environment Variables For Control Plane and Terraform
+      shell: bash
+      run: |
+        echo "CPLN_ORG=${{inputs.org}}" >> $GITHUB_ENV
+        echo "CPLN_TOKEN=${{inputs.token}}" >> $GITHUB_ENV
+        echo "TF_VAR_org=${{inputs.org}}" >> $GITHUB_ENV
+        echo "TF_VAR_token=${{inputs.token}}" >> $GITHUB_ENV
+        echo "TF_VAR_gvc=${{inputs.gvc}}" >> $GITHUB_ENV
+        echo "TF_VAR_workload=${{inputs.workload}}" >> $GITHUB_ENV
+        echo "TF_VAR_image=${{inputs.image}}:${{inputs.tag}}" >> $GITHUB_ENV
+        echo "TF_WORKSPACE=${{inputs.terraform_workspace}}" >> $GITHUB_ENV
+        echo "TF_CLI_CONFIG_FILE=${{ github.workspace }}/terraform/.terraformrc" >> $GITHUB_ENV
