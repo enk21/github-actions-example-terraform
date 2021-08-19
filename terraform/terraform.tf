@@ -1,10 +1,10 @@
 terraform {
 
   backend "remote" {
-    organization = "TERRAFORM_ORG"
+    organization = "cpln_eric"
 
     workspaces {
-      prefix = "WORKSPACE_PREFIX"
+      prefix = "tbd-github-test-"
     }
   }
 

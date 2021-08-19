@@ -5,8 +5,8 @@ name: Deploy-To-Control-Plane
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push events but only for the dev branch
-  # push:
-  #   branches: [main, dev]
+  push:
+    branches: [main, dev]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,12 +33,12 @@ jobs:
         if: ${{ github.ref == 'refs/heads/dev' }}
         uses: ./.github/actions/inputs
         with:
-          org: ORG_NAME
+          org: tesla
           token: ${{ secrets.CPLN_TOKEN }}
           control_plane_terraform_version: 1.0.0
-          gvc: dev-gvc
-          workload: dev-workload
-          image: IMAGE_NAME_DEV_BRANCH
+          gvc: tbd-github-terraform-test-dev-gvc
+          workload: tbd-github-terraform-test-dev-workload
+          image: tbd-github-terraform-test-dev
           tag: $(git rev-parse --short HEAD)
           terraform_workspace: dev
 
@@ -46,12 +46,12 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: ./.github/actions/inputs
         with:
-          org: ORG_NAME
+          org: tesla
           token: ${{ secrets.CPLN_TOKEN }}
           control_plane_terraform_version: 1.0.0
-          gvc: main-gvc
-          workload: main-workload
-          image: IMAGE_NAME_MAIN_BRANCH
+          gvc: tbd-github-terraform-test-main-gvc
+          workload: tbd-github-terraform-test-main-gvc
+          image: tbd-github-terraform-test-main
           tag: $(git rev-parse --short HEAD)
           terraform_workspace: main
 
