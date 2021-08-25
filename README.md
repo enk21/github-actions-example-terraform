@@ -42,9 +42,9 @@ The Terraform provider and Control Plane CLI require the following variables be 
 
 These can be set by clicking Settings -> Secrets.
 
-## Example Set Up
+## Example Action Overview and Set Up
 
-When triggered, the GitHub action will execute the steps defined in the workload file located at `.github/workflow/deploy-to-control-plane.yml`. The workflow will generate a Terraform plan based on the HCL in the `/terraform/terrafrom.tf` file. After the plan has been reviewed, the action needs to be manually triggered with the apply flag set to true. This action will containerize and push the application to the org's private image repository and apply the Terraform plan.
+When triggered, the GitHub action will execute the steps defined in the workload file located at `.github/workflow/deploy-to-control-plane.yml`. The workflow will generate a Terraform plan based on the HCL in the `/terraform/terrafrom.tf` file. After the plan has been reviewed, the action needs to be manually triggered with the apply flag set to true. This apply flag will execute the steps that will containerize and push the application to the org's private image repository and apply the Terraform plan. 
 
 The action file `.github/actions/inputs/action.yml`, is used by the workflow file to configure the pipeline based on the branch and input variables. This can be used to deploy multiple branches as individual GVCs/workloads to Control Plane.
 
@@ -56,9 +56,6 @@ The action will:
 The action sets the environment variables used by the variables in the Terraform script (prefixed with `TF_VAR_`). Any additional variables needed should be added to the action and set in the workflow.
 
 The workflow will:
-- Run the Terraform Plan command to display the changes that will be deployed. To apply the changes, the workflow must be executed manually and the apply flag set to true. 
-
-The workflow will:
 - Check out the code.
 - Run the action based on the branch.
 - Authenticate, containerize and push the application to the org's private image repository if the apply flag is set to true. 
@@ -67,7 +64,7 @@ The workflow will:
 - Run the Terraform plan command if the apply flag is set to false.
 - Run the Terraform apply command if the apply flag is set to true.
 
-Perform the following steps to set up the example:
+**Perform the following steps to set up the example:**
 
 1. Fork the example into your own workspace.
 
@@ -84,6 +81,16 @@ Perform the following steps to set up the example:
   - `WORKSPACE_PREFIX`: The Terraform Workspace Prefix. Only enter the prefix. Terraform will automatically append the value of the `TF_WORKLOAD` environment variable that was set in the action when pushing the state to the Terraform cloud. This comes in handy when deploying to multiple branches as each branch will have its own workspace (hosting the state) within the Terraform Cloud. 
 
 4. The file `/terraform/.terraformrc` must be included to allow Terraform to authenticate to their cloud service. No modification is necessary. The workflow will update the credentials during execution using the `sed` command on line 71.
+
+**To manually trigger the GitHub action:**
+
+1. From within the repository, click `Actions`.
+2. Click the `Deploy-To-Control-Plane` link under `Workflows`.
+3. Click the `Run workflow` pulldown button. 
+4. Select the branch to use.
+5. Update the `Apply Terraform` button to `true` to apply the Terraform updates.
+6. Optionally, add the SHA of a specific to deploy. Leave empty to deploy the latest. 
+7. Click `Run workflow`.
 
 ## Running Example Application
 
