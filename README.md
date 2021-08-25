@@ -83,11 +83,11 @@ The action sets the environment variables used by the variables in the Terraform
 
 **To manually trigger the GitHub action:**
 
-1. From within the repository, click `Actions`.
+1. From within the repository, click `Actions` (top menu).
 2. Click the `Deploy-To-Control-Plane` link under `Workflows`.
 3. Click the `Run workflow` pulldown button. 
 4. Select the branch to use.
-5. Update the `Apply Terraform` button to `true` to apply the Terraform updates.
+5. Update the `Apply Terraform` text box to `true` to apply the Terraform updates.
 6. Optionally, add the SHA of a specific commit to deploy. Leave empty to deploy the latest. 
 7. Click `Run workflow`.
 
