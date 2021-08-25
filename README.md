@@ -34,12 +34,12 @@ The Terraform provider and Control Plane CLI require a `Service Account` with th
 
 ## GitHub Set Up
 
-The Terraform provider and Control Plane CLI require the following variables be added as a secret:
+The example require the following variables be added as a secret:
 
 - `CPLN_TOKEN`: Service Account Key
 - `TF_CLOUD_TOKEN`: Terraform Cloud Token
 
-Browse to the Secrets page by clicking `Settings`, then `Secrets`.
+Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets` (left menu bar).
 
 ## Example Overview and Set Up
 
@@ -88,7 +88,7 @@ The action sets the environment variables used by the variables in the Terraform
 3. Click the `Run workflow` pulldown button. 
 4. Select the branch to use.
 5. Update the `Apply Terraform` button to `true` to apply the Terraform updates.
-6. Optionally, add the SHA of a specific to deploy. Leave empty to deploy the latest. 
+6. Optionally, add the SHA of a specific commit to deploy. Leave empty to deploy the latest. 
 7. Click `Run workflow`.
 
 ## Running Example Application
@@ -100,9 +100,6 @@ After the action has successfully deployed the application, it can be tested by 
 3. Select the workload that was set in the action's workload variable.
 4. Click the `Open` button. The example application will open in a new tab. It will display the environment variables that exist in the running container and the arguments that were used when executing the container.
 
-## Notes
-
-- When executing the GitHub action manually, there is also an option to deploy a specific commit SHA. Leave the value empty to deploy the latest commit.
 
 ## Helper Links
 
