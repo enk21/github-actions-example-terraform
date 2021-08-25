@@ -14,7 +14,7 @@ Follow these instructions to set up an account and workspace at Terraform Cloud:
 
 2. Create an organization. Keep a note of the organization. It will be used in the example set up section.
 
-3. Create a workspace. Select the `CLI-driven workflow` type. The example uses a `workspace prefix` when configuring the workspace block in the `/terraform/terraform.tf` file. This allows a Terraform state to be used for each branch/environment deployed. The prefix is prepended to the value of the environment variable `TF_WORKSPACE` when Terraform is executing. When creating the workspace in the wizard, the name should be the prefix followed by the branch/environment name. For example, `cpln-dev` and `cpln-prod` (prefix is `cpln-`). Keep a note of the workspace. It will be used in the example set up section.
+3. Create a workspace. Select the `CLI-driven workflow` type. The example uses a `workspace prefix` when configuring the workspace block in the `/terraform/terraform.tf` file. This allows a Terraform state to be used for each branch deployed. The prefix is prepended to the value of the environment variable `TF_WORKSPACE` when Terraform is executing. When creating the workspace in the wizard, the name should be the prefix followed by the branch name. For example, `cpln-dev` and `cpln-main` (prefix is `cpln-`). Keep a note of the workspace. It will be used in the example set up section.
 
 4. Set the execution mode to `local` in the general settings.
 
@@ -29,20 +29,19 @@ Follow these instructions to set up an account and workspace at Terraform Cloud:
 The Terraform provider and Control Plane CLI require a `Service Account` with the proper permissions to perform actions against the Control Plane API. 
 
 1. Follow the Control Plane documentation to create a Service Account and create a key. Take a note of the key. It will be used in the next section.
-2. Add the Service Account to the `superusers` group. Once the workflow executes as expected, a policy can be created with a limited set of permissions and the Service Account can be removed from the superusers group.
+2. Add the Service Account to the `superusers` group. Once the workflow executes as expected, a policy can be created with a limited set of permissions and the Service Account can be removed from the `superusers` group.
    
 
 ## GitHub Set Up
 
 The Terraform provider and Control Plane CLI require the following variables be added as a secret:
 
-- Add the following variables as repository secrets (settings -> secrets):
-    - `CPLN_TOKEN`: Service Account Key
-    - `TF_CLOUD_TOKEN`: Terraform Cloud Token
+- `CPLN_TOKEN`: Service Account Key
+- `TF_CLOUD_TOKEN`: Terraform Cloud Token
 
-These can be set by clicking Settings -> Secrets.
+Browse to the Secrets page by clicking `Settings`, then `Secrets`.
 
-## Example Action Overview and Set Up
+## Example Overview and Set Up
 
 When triggered, the GitHub action will execute the steps defined in the workload file located at `.github/workflow/deploy-to-control-plane.yml`. The workflow will generate a Terraform plan based on the HCL in the `/terraform/terrafrom.tf` file. After the plan has been reviewed, the action needs to be manually triggered with the apply flag set to true. This apply flag will execute the steps that will containerize and push the application to the org's private image repository and apply the Terraform plan. 
 
