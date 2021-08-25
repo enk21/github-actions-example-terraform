@@ -43,7 +43,7 @@ Browse to the Secrets page by clicking `Settings`, then `Secrets`.
 
 ## Example Overview and Set Up
 
-When triggered, the GitHub action will execute the steps defined in the workload file located at `.github/workflow/deploy-to-control-plane.yml`. The workflow will generate a Terraform plan based on the HCL in the `/terraform/terrafrom.tf` file. After the plan has been reviewed, the action needs to be manually triggered with the apply flag set to true. This apply flag will execute the steps that will containerize and push the application to the org's private image repository and apply the Terraform plan. 
+When triggered, the GitHub action will execute the steps defined in the workload file located at `.github/workflow/deploy-to-control-plane.yml`. The workflow will generate a Terraform plan based on the HCL in the `/terraform/terrafrom.tf` file. The HCL will create/update a GVC and workload hosted at Control Plane. After the plan has been reviewed, the action needs to be manually triggered with the apply flag set to true. This apply flag will execute the steps that will containerize and push the application to the org's private image repository and apply the Terraform plan. 
 
 The action file `.github/actions/inputs/action.yml`, is used by the workflow file to configure the pipeline based on the branch and input variables. This can be used to deploy multiple branches as individual GVCs/workloads to Control Plane.
 
