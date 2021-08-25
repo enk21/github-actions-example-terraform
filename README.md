@@ -14,7 +14,7 @@ Follow these instructions to set up an account and workspace at Terraform Cloud:
 
 2. Create an organization. Keep a note of the organization. It will be used in the example set up section.
 
-3. Create a workspace. Select the `CLI-driven workflow` type. The example uses a `workspace prefix` when configuring the workspace block in the `/terraform/terraform.tf` file. This allows a Terraform state to be used for each branch deployed. The prefix is prepended to the value of the environment variable `TF_WORKSPACE` when Terraform is executing. When creating the workspace in the wizard, the name should be the prefix followed by the branch name. For example, `cpln-dev` and `cpln-main` (prefix is `cpln-`). Keep a note of the workspace. It will be used in the example set up section.
+3. Create a workspace. Select the `CLI-driven workflow` type. The example uses a `workspace prefix` when configuring the workspace block in the `/terraform/terraform.tf` file. This allows a Terraform workspace to be used for each branch deployed. The prefix is prepended to the value of the environment variable `TF_WORKSPACE` when Terraform is executing. When creating the workspace in the wizard, the name should be the prefix followed by the branch name. For example, `cpln-dev` and `cpln-main` (prefix is `cpln-`). Keep a note of the workspace. It will be used in the example set up section.
 
 4. Set the execution mode to `local` in the general settings.
 
@@ -47,14 +47,14 @@ When triggered, the GitHub action will execute the steps defined in the workload
 
 The action file `.github/actions/inputs/action.yml`, is used by the workflow file to configure the pipeline based on the branch and input variables. This can be used to deploy multiple branches as individual GVCs/workloads to Control Plane.
 
-The action will:
+**The action will:**
 - Install the Control Plane CLI.
 - Install the Control Plane Terraform Provider.
 - Configure the required environment variables based on the input from the workflow.
 
 The action sets the environment variables used by the variables in the Terraform script (prefixed with `TF_VAR_`). Any additional variables needed should be added to the action and set in the workflow.
 
-The workflow will:
+**The workflow will:**
 - Check out the code.
 - Run the action based on the branch.
 - Authenticate, containerize and push the application to the org's private image repository if the apply flag is set to true. 
@@ -68,16 +68,16 @@ The workflow will:
 1. Fork the example into your own workspace.
 
 2. Review and update the `.github/workflows/deploy-to-control-plane.yml` file:
-  - Line 9: Uncomment and update with the action (e.g., push, pull request, etc.) and branch names (e.g., dev, main, etc.) this workflow will trigger on.
-  - Lines 33 and 46: Update the branch names to match line 9.
-  - Lines 36 and 49: Update ORG_NAME.
-  - Lines 41 and 54: Update IMAGE_NAME_DEV_BRANCH and IMAGE_NAME_MAIN_BRANCH. The action is set to append the short SHA of the commit when pushing the image to the org's private image repository.
-  - Lines 39/40 and 52/53: Update the GVC and workspace name.
-  - Lines 43 and 56: Update the Terraform workspace name. Do not include the common prefix.
+    - Line 9: Uncomment and update with the action (e.g., push, pull request, etc.) and branch names (e.g., dev, main, etc.) this workflow will trigger on.
+    - Lines 33 and 46: Update the branch names to match line 9.
+    - Lines 36 and 49: Update ORG_NAME.
+    - Lines 41 and 54: Update IMAGE_NAME_DEV_BRANCH and IMAGE_NAME_MAIN_BRANCH. The action is set to append the short SHA of the commit when pushing the image to the org's private image repository.
+    - Lines 39/40 and 52/53: Update the GVC and workspace name.
+    - Lines 43 and 56: Update the Terraform workspace name. Do not include the common prefix.
 
 3. Update the Terraform HCL file located at `/terraform/terraform.tf` using the values that were created in the `Terraform Cloud Set Up` section:
-  - `TERRAFORM_ORG`: The Terraform Cloud organization.
-  - `WORKSPACE_PREFIX`: The Terraform Workspace Prefix. Only enter the prefix. Terraform will automatically append the value of the `TF_WORKLOAD` environment variable that was set in the action when pushing the state to the Terraform cloud. This comes in handy when deploying to multiple branches as each branch will have its own workspace (hosting the state) within the Terraform Cloud. 
+    - `TERRAFORM_ORG`: The Terraform Cloud organization.
+    - `WORKSPACE_PREFIX`: The Terraform Workspace Prefix. Only enter the prefix. Terraform will automatically append the value of the `TF_WORKLOAD` environment variable that was set in the action when pushing the state to the Terraform cloud. This comes in handy when deploying to multiple branches as each branch will have its own workspace (hosting the state) within the Terraform Cloud. 
 
 4. The file `/terraform/.terraformrc` must be included to allow Terraform to authenticate to their cloud service. No modification is necessary. The workflow will update the credentials during execution using the `sed` command on line 71.
 
